@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<package format="2">
+
+  <name>ros_bt_examples</name>
+  <version>1.0.0</version>
+  <description>Examples for using ROS and BehaviortreeCPP together</description>
+
+  <maintainer email="afzalhmd14@gmail.com">Afzal Ahmad</maintainer>
+
+  <license>MIT</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <depend>roscpp</depend>
+  <depend>nodelet</depend>
+  <depend>std_msgs</depend>
+  <depend>mrs_lib</depend>
+  <depend>behaviortree_cpp</depend>
+
+  <export>
+    <nodelet plugin="${prefix}/plugins.xml" />
+  </export>
+
+</package>

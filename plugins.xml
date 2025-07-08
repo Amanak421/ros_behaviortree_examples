@@ -1,0 +1,9 @@
+<library path="lib/libt_sub_pub_example_nodelet">
+  <class name="ros_bt_examples/SubPubExample"
+         type="ros_bt_examples::SubPubExample"
+         base_class_type="nodelet::Nodelet">
+    <description>
+      Example nodelet for demonstrating subscibers and publishers with BehviortreeCPP.
+    </description>
+  </class>
+</library>

@@ -1,0 +1,55 @@
+<launch>
+     <arg name="standalone"
+          default="true" />
+
+     <arg name="debug"
+          default="false" />
+
+     <arg if="$(arg debug)"
+          name="launch_prefix"
+          value="debug_roslaunch" />
+
+     <arg unless="$(arg debug)"
+          name="launch_prefix"
+          value="" />
+
+     <!-- Standalone -->
+     <arg if="$(eval arg('standalone') or arg('debug'))"
+          name="nodelet"
+          value="standalone" />
+
+     <arg if="$(eval arg('standalone') or arg('debug'))"
+          name="nodelet_manager"
+          value="" />
+
+     <group ns="ros_bt_examples">
+          <!-- Nodeleted -->
+          <arg name="nodelet_manager_name"
+               default="ros_bt_examples_nodelet_manager" />
+
+          <arg if="$(eval not arg('standalone') and not arg('debug'))"
+               name="nodelet"
+               value="load" />
+
+          <arg if="$(eval not arg('standalone') and not arg('debug'))"
+               name="nodelet_manager"
+               value="$(arg nodelet_manager_name)" />
+
+          <node pkg="nodelet"
+                type="nodelet"
+                name="ros_bt_examples_nodelet"
+                args="$(arg nodelet) ros_bt_examples/SubPubExample $(arg nodelet_manager)"
+                output="screen"
+                launch-prefix="$(arg launch_prefix)">
+
+               <rosparam file="$(find ros_bt_examples)/config/ros_bt_examples.yaml"
+                         command="load" />
+               <remap from="~pub_log"
+                      to="sub_pub/log" />
+
+               <remap from="~sub_str"
+                      to="dummy/string" />
+          </node>
+     </group>
+
+</launch>
