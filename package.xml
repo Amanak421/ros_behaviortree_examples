@@ -1,24 +1,24 @@
 <?xml version="1.0"?>
-<package format="2">
+<package format="3">
+  <name>ros_behaviortree_examples</name>
+  <version>0.0.0</version>
+  <description>TODO: Package description</description>
+  <maintainer email="andrlja4@fel.cvut.cz">Jakub Andrlík</maintainer>
+  <license>Apache-2.0</license>
 
-  <name>ros_bt_examples</name>
-  <version>1.0.0</version>
-  <description>Examples for using ROS and BehaviortreeCPP together</description>
+  <buildtool_depend>ament_cmake</buildtool_depend>
 
-  <maintainer email="afzalhmd14@gmail.com">Afzal Ahmad</maintainer>
-
-  <license>MIT</license>
-
-  <buildtool_depend>catkin</buildtool_depend>
-
-  <depend>roscpp</depend>
-  <depend>nodelet</depend>
-  <depend>std_msgs</depend>
-  <depend>mrs_lib</depend>
-  <depend>behaviortree_cpp</depend>
+  <test_depend>ament_lint_auto</test_depend>
+  <test_depend>ament_lint_common</test_depend>
 
   <export>
-    <nodelet plugin="${prefix}/plugins.xml" />
-  </export>
+    <build_type>ament_cmake</build_type>
+    <depend>rclcpp</depend>
+    <depend>rclcpp_components</depend>
+    <depend>std_msgs</depend>
 
+    <exec_depend>launch</exec_depend>
+    <exec_depend>launch_ros</exec_depend>
+    <exec_depend>ros2launch</exec_depend>
+  </export>
 </package>
