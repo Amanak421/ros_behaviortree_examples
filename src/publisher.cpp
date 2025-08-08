@@ -24,14 +24,14 @@ namespace example_simple_publisher
         void initialize();
     };
 
-    SimplePublisher::SimplePublisher(const rclcpp::NodeOptions& options): Node("example_waypoint_flier_simple", options)
+    SimplePublisher::SimplePublisher(const rclcpp::NodeOptions& options): Node("simple_publisher", options)
     {
         timer_initializer_ = create_wall_timer(std::chrono::duration<double>(1.0), std::bind(&SimplePublisher::initialize,this));
     }
 
     void SimplePublisher::initialize(){
 
-        publisher_ = this->create_publisher<std_msgs::msg::String>("bt_simple_string", 10);
+        publisher_ = this->create_publisher<std_msgs::msg::String>("string_counter", 10);
         timer_ = this->create_wall_timer(1s, std::bind(&SimplePublisher::timer_callback,this));
 
         is_initialized_ = true;
