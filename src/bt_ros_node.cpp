@@ -29,6 +29,8 @@ namespace example_simple_ros_node
 
         std::chrono::duration<double> timer_delay;
         std::string tree_file_name;
+        int tick_repetition;
+        int tick_counter = 0;
 
         std::shared_ptr<mrs_lib::SubscriberHandler<std_msgs::msg::String>> subscriber_string;
         rclcpp::Publisher<std_msgs::msg::String>::SharedPtr publisher_string;
@@ -52,6 +54,7 @@ namespace example_simple_ros_node
 
         /* Load parameters */
         loaded_successfully &= utils::load_param("bt_file_name", tree_file_name, std::string("bt_tree.xml"), *node_);
+        loaded_successfully &= utils::load_param("tick_repetition", tick_repetition, 1, *node_);
         
         if (!loaded_successfully)
         {
@@ -66,7 +69,7 @@ namespace example_simple_ros_node
         shopts.threadsafe         = true;
         shopts.autostart          = true;
 
-        subscriber_string = std::make_shared<mrs_lib::SubscriberHandler<std_msgs::msg::String>>(shopts, "bt_simple_string");
+        subscriber_string = std::make_shared<mrs_lib::SubscriberHandler<std_msgs::msg::String>>(shopts, "string_counter");
 
         /* Create publisher*/
         publisher_string = this->create_publisher<std_msgs::msg::String>("bt_output", 10);
@@ -95,7 +98,7 @@ namespace example_simple_ros_node
     void SimpleBTNode::registerNodes(BT::BehaviorTreeFactory& factory){
         factory.registerNodeType<BTNodes::StringTopicToBT>("StringTopicToBT", subscriber_string, this->get_logger());
         factory.registerNodeType<BTNodes::Logger>("Logger", this->get_logger());
-        factory.registerNodeType<BTNodes::BTToStringTopic>("BTToStringTopic", this->get_logger());
+        factory.registerNodeType<BTNodes::BTToStringTopic>("BTToStringTopic", publisher_string, this->get_logger());
     }
 
     void SimpleBTNode::timer_callback(){
@@ -103,10 +106,13 @@ namespace example_simple_ros_node
             return;
         }
 
-        RCLCPP_INFO(this->get_logger(), "[BTNode]: Ticking the tree");
-
+        RCLCPP_INFO(this->get_logger(), "[BTNode]: Ticking the tree (%i/%i)", tick_counter, tick_repetition);
         if (bt_tree.tickOnce() == BT::NodeStatus::SUCCESS) {
-            RCLCPP_INFO(this->get_logger(), "[BTNode]: Finished the tree, shutting down");
+            tick_counter++;
+        }
+
+        if(tick_counter > tick_repetition){
+            RCLCPP_INFO(this->get_logger(), "[BTNode]: Finished ticking the tree, shutting down");
             rclcpp::shutdown();
         }
     }
