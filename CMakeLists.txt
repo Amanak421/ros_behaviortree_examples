@@ -28,6 +28,10 @@ add_library(simple_bt_node SHARED
   src/bt_ros_node.cpp
 )
 
+add_library(subscriber SHARED
+  src/subscriber.cpp
+)
+
 target_compile_definitions(publisher PRIVATE "MY_COMPOSITION_BUILDING_DLL")
 ament_target_dependencies(publisher rclcpp rclcpp_components std_msgs)
 
@@ -35,8 +39,12 @@ target_compile_definitions(simple_bt_node PRIVATE "MY_COMPOSITION_BUILDING_DLL")
 ament_target_dependencies(simple_bt_node mrs_lib behaviortree_cpp ament_index_cpp Eigen3 rclcpp rclcpp_components std_msgs)
 target_include_directories(simple_bt_node PRIVATE ${PROJECT_SOURCE_DIR}/include)
 
+target_compile_definitions(subscriber PRIVATE "MY_COMPOSITION_BUILDING_DLL")
+ament_target_dependencies(subscriber rclcpp rclcpp_components std_msgs)
+
 rclcpp_components_register_nodes(publisher "example_simple_publisher::SimplePublisher")
 rclcpp_components_register_nodes(simple_bt_node "example_simple_ros_node::SimpleBTNode")
+rclcpp_components_register_nodes(subscriber "example_simple_subscriber::SimpleSubscriber")
 
 install(TARGETS publisher
   ARCHIVE DESTINATION lib
@@ -49,6 +57,12 @@ install(TARGETS simple_bt_node
   LIBRARY DESTINATION lib
   RUNTIME DESTINATION bin
   INCLUDES DESTINATION include
+)
+
+install(TARGETS subscriber
+  ARCHIVE DESTINATION lib
+  LIBRARY DESTINATION lib
+  RUNTIME DESTINATION bin
 )
 
 install(DIRECTORY launch
