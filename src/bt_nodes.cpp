@@ -52,7 +52,7 @@ namespace BTNodes
                     RCLCPP_ERROR(node_logger, "Missing input to node (ros_topic)!");
                     return NodeStatus::FAILURE;
                 }
-                RCLCPP_INFO(node_logger, "Received message: %s", msg.value());
+                RCLCPP_INFO(node_logger, "Received message: %s", msg.value().c_str());
                 return NodeStatus::SUCCESS;
             }
 
