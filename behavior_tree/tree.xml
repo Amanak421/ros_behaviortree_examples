@@ -2,7 +2,9 @@
 <root BTCPP_format="4">
   <BehaviorTree ID="main_tree">
     <Sequence>
-      <StringTopicToBT/>
+      <StringTopicToBT ros_topic="{msg}"/>
+      <Logger ros_topic="{msg}"/>
+      <BTToStringTopic ros_topic="{msg}"/>
     </Sequence>
   </BehaviorTree>
 </root>
