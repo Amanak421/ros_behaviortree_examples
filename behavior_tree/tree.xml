@@ -2,7 +2,7 @@
 <root BTCPP_format="4">
   <BehaviorTree ID="main_tree">
     <Sequence>
-      <StringTopicToBB/>
+      <StringTopicToBT/>
     </Sequence>
   </BehaviorTree>
 </root>
