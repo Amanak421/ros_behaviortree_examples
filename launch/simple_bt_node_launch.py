@@ -1,8 +1,12 @@
 from launch import LaunchDescription
 from launch_ros.actions import ComposableNodeContainer
 from launch_ros.descriptions import ComposableNode
+from ament_index_python.packages import get_package_share_directory
+import os
 
 def generate_launch_description():
+    config_file = os.path.join(get_package_share_directory('ros_behaviortree_examples'), 'config', 'simple_bt_node.yaml')
+
     return LaunchDescription([
         ComposableNodeContainer(
             name='simple_bt_node_container',
@@ -13,7 +17,8 @@ def generate_launch_description():
                 ComposableNode(
                     package='ros_behaviortree_examples',
                     plugin='example_simple_ros_node::SimpleBTNode',
-                    name='SimpleBTNode'
+                    name='SimpleBTNode',
+                    parameters=[config_file]
                 )
             ],
             output='screen',
