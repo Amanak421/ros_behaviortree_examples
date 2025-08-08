@@ -13,4 +13,8 @@ windows:
   - bt_node:
       layout: tiled
       panes:
-        - sleep 5; ros2 launch ros_behaviortree_examples simple_bt_node_launch.py
+        - sleep 3; ros2 launch ros_behaviortree_examples simple_bt_node_launch.py
+  - subscriber:
+      layout: tiled
+      panes:
+        - sleep 3; ros2 launch ros_behaviortree_examples subscriber_launch.py
