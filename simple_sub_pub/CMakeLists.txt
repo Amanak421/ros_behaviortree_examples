@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.5)
-project(ros_behaviortree_examples)
+project(simple_sub_pub)
 
 # Default to C++14
 if(NOT CMAKE_CXX_STANDARD)

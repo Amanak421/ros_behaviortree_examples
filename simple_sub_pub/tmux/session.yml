@@ -9,12 +9,12 @@ windows:
   - publisher:
       layout: tiled
       panes:
-        - ros2 launch ros_behaviortree_examples publisher_launch.py
+        - ros2 launch simple_sub_pub publisher_launch.py
   - bt_node:
       layout: tiled
       panes:
-        - sleep 3; ros2 launch ros_behaviortree_examples simple_bt_node_launch.py
+        - sleep 3; ros2 launch simple_sub_pub simple_bt_node_launch.py
   - subscriber:
       layout: tiled
       panes:
-        - sleep 3; ros2 launch ros_behaviortree_examples subscriber_launch.py
+        - sleep 3; ros2 launch simple_sub_pub subscriber_launch.py

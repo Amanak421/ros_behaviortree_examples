@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <package format="3">
-  <name>ros_behaviortree_examples</name>
+  <name>simple_sub_pub</name>
   <version>0.0.0</version>
   <description>TODO: Package description</description>
   <maintainer email="andrlja4@fel.cvut.cz">Jakub Andrlík</maintainer>

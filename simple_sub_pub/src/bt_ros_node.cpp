@@ -78,7 +78,7 @@ namespace example_simple_ros_node
         registerNodes(factory);
 
         try {
-            factory.registerBehaviorTreeFromFile(ament_index_cpp::get_package_share_directory("ros_behaviortree_examples") + "/behavior_tree/" + tree_file_name);
+            factory.registerBehaviorTreeFromFile(ament_index_cpp::get_package_share_directory("simple_sub_pub") + "/behavior_tree/" + tree_file_name);
         }
         catch (const std::exception& e) {
             RCLCPP_ERROR(this->get_logger(), "[BTNode]: Error while registering the tree from file %s/behavior_tree/tree.xml", ament_index_cpp::get_package_share_directory("ros_behaviortree_examples").c_str());

@@ -12,7 +12,7 @@ def generate_launch_description():
             executable='component_container',
             composable_node_descriptions=[
                 ComposableNode(
-                    package='ros_behaviortree_examples',
+                    package='simple_sub_pub',
                     plugin='example_simple_subscriber::SimpleSubscriber',
                     name='SimpleSubscriber'
                 )

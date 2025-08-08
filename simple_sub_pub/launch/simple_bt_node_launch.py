@@ -5,7 +5,7 @@ from ament_index_python.packages import get_package_share_directory
 import os
 
 def generate_launch_description():
-    config_file = os.path.join(get_package_share_directory('ros_behaviortree_examples'), 'config', 'simple_bt_node.yaml')
+    config_file = os.path.join(get_package_share_directory('simple_sub_pub'), 'config', 'simple_bt_node.yaml')
 
     return LaunchDescription([
         ComposableNodeContainer(
@@ -15,7 +15,7 @@ def generate_launch_description():
             executable='component_container',  # Multithreaded container
             composable_node_descriptions=[
                 ComposableNode(
-                    package='ros_behaviortree_examples',
+                    package='simple_sub_pub',
                     plugin='example_simple_ros_node::SimpleBTNode',
                     name='SimpleBTNode',
                     parameters=[config_file]
