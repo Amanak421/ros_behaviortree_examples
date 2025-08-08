@@ -1,4 +1,1 @@
-timer:
-  rate: 1 # [Hz]
-bt:
-  behavior_file: "behavior.xml"
+behavior_tree_file: "tree.xml"

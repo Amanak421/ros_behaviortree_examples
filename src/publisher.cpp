@@ -31,7 +31,7 @@ namespace example_simple_publisher
 
     void SimplePublisher::initialize(){
 
-        publisher_ = this->create_publisher<std_msgs::msg::String>("topic", 10);
+        publisher_ = this->create_publisher<std_msgs::msg::String>("bt_simple_string", 10);
         timer_ = this->create_wall_timer(1s, std::bind(&SimplePublisher::timer_callback,this));
 
         is_initialized_ = true;

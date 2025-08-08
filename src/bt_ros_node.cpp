@@ -1,0 +1,109 @@
+#include <rclcpp/rclcpp.hpp>
+#include <std_msgs/msg/string.hpp>
+#include <ament_index_cpp/get_package_share_directory.hpp>
+
+#include <mrs_lib/subscriber_handler.h>
+
+#include "behaviortree_cpp/bt_factory.h"
+
+#include "utils/params.h"
+#include "bt_nodes.cpp"
+
+using namespace std::chrono_literals;
+
+namespace example_simple_ros_node
+{
+    class SimpleBTNode : public rclcpp::Node
+    {
+    public:
+        SimpleBTNode(const rclcpp::NodeOptions& options);
+    private:
+        rclcpp::Node::SharedPtr node_;
+        bool loaded_successfully = true;
+
+        /* is set to true when the nodelet is initialized, useful for rejecting callbacks that are called before the node is initialized */
+        std::atomic<bool> is_initialized_ = false;
+
+        rclcpp::TimerBase::SharedPtr timer_;
+        void timer_callback();
+
+        std::chrono::duration<double> timer_delay;
+        std::string tree_file;
+
+        std::shared_ptr<mrs_lib::SubscriberHandler<std_msgs::msg::String>> m_sub_string;
+
+        BT::BehaviorTreeFactory factory;
+        BT::Tree bt_tree;
+        void registerNodes(BT::BehaviorTreeFactory& factory);
+
+        rclcpp::TimerBase::SharedPtr timer_initializer_;
+        void initialize();
+    };
+
+    SimpleBTNode::SimpleBTNode(const rclcpp::NodeOptions& options): Node("example_waypoint_flier_simple", options)
+    {
+        timer_initializer_ = create_wall_timer(std::chrono::duration<double>(1.0), std::bind(&SimpleBTNode::initialize,this));
+    }
+
+    void SimpleBTNode::initialize()
+    {
+        node_ = this->shared_from_this();
+
+        loaded_successfully &= utils::load_param("behavior_tree_file", tree_file, std::string("bt_tree.xml"), *node_);
+        
+        if (!loaded_successfully)
+        {
+            RCLCPP_INFO_ONCE(node_->get_logger(),"Failed to load non optional parameters");
+        }else{
+            RCLCPP_INFO(node_->get_logger(), "Loaded tree file: %s", tree_file.c_str());
+        }
+    
+        mrs_lib::SubscriberHandlerOptions shopts;
+        shopts.node               = node_;
+        shopts.node_name          = "bt_ros_node";
+        shopts.no_message_timeout = rclcpp::Duration(5s);
+        shopts.threadsafe         = true;
+        shopts.autostart          = true;
+
+        m_sub_string = std::make_shared<mrs_lib::SubscriberHandler<std_msgs::msg::String>>(shopts, "bt_simple_string");
+
+        registerNodes(factory);
+
+        try {
+            factory.registerBehaviorTreeFromFile(ament_index_cpp::get_package_share_directory("ros_behaviortree_examples") + "/behavior_tree/tree.xml");
+        }
+        catch (const std::exception& e) {
+            RCLCPP_ERROR(this->get_logger(), "[BTNode]: Error while registering the tree from file %s/behavior_tree/tree.xml", ament_index_cpp::get_package_share_directory("ros_behaviortree_examples").c_str());
+            rclcpp::shutdown();
+            return;
+        }
+
+        bt_tree = factory.createTree("main_tree");
+                
+        timer_ = this->create_wall_timer(1s, std::bind(&SimpleBTNode::timer_callback,this));
+
+        is_initialized_ = true;
+        RCLCPP_INFO(this->get_logger(), "[SimpleBTNode]: Init complete");
+        timer_initializer_->cancel();
+    }
+
+    void SimpleBTNode::registerNodes(BT::BehaviorTreeFactory& factory){
+        factory.registerNodeType<BTNodes::StringTopicToBT>("StringTopicToBB", m_sub_string, this->get_logger());
+    }
+
+    void SimpleBTNode::timer_callback(){
+        if (!is_initialized_) {
+            return;
+        }
+
+        RCLCPP_INFO(this->get_logger(), "[BTNode]: Ticking the tree");
+
+        if (bt_tree.tickOnce() == BT::NodeStatus::SUCCESS) {
+            RCLCPP_INFO(this->get_logger(), "[BTNode]: Finished the tree, shutting down");
+            rclcpp::shutdown();
+        }
+    }
+}
+
+#include "rclcpp_components/register_node_macro.hpp"
+RCLCPP_COMPONENTS_REGISTER_NODE(example_simple_ros_node::SimpleBTNode);

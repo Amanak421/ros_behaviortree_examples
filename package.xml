@@ -16,6 +16,9 @@
     <depend>rclcpp</depend>
     <depend>rclcpp_components</depend>
     <depend>std_msgs</depend>
+    <depend>ament_index_cpp</depend>
+    <depend>behaviortree_cpp</depend>
+    <depend>mrs_lib</depend>
 
     <exec_depend>launch</exec_depend>
     <exec_depend>launch_ros</exec_depend>

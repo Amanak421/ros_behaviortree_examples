@@ -9,12 +9,8 @@ windows:
   - publisher:
       layout: tiled
       panes:
-        - rostopic pub -r 10 /ros_bt_examples/dummy/string std_msgs/String
-  - subsciber:
+        - ros2 launch ros_behaviortree_examples publisher_launch.py
+  - bt_node:
       layout: tiled
       panes:
-        - sleep 5; rostopic echo /ros_bt_examples/sub_pub/log
-  - sub_pub_bt:
-      layout: tiled
-      panes:
-        - roslaunch ros_bt_examples sub_pub_example.launch
+        - sleep 5; ros2 launch ros_behaviortree_examples simple_bt_node_launch.py
