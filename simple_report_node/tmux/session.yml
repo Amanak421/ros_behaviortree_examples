@@ -1,0 +1,16 @@
+# do not modify these
+root: ./
+name: examples
+socket_name: ros_bt
+attach: false
+# you can modify these
+startup_window: sub_pub_bt
+windows:
+  - bt_node:
+      layout: tiled
+      panes:
+        - ros2 launch simple_report_node simple_bt_node_launch.py
+  - subscriber:
+      layout: tiled
+      panes:
+        - ros2 launch simple_report_node subscriber_launch.py

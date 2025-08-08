@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<package format="3">
+  <name>simple_report_node</name>
+  <version>0.0.0</version>
+  <description>TODO: Package description</description>
+  <maintainer email="andrlja4@fel.cvut.cz">Jakub Andrlík</maintainer>
+  <license>Apache-2.0</license>
+
+  <buildtool_depend>ament_cmake</buildtool_depend>
+  <buildtool_depend>rosidl_default_generators</buildtool_depend>
+
+  <exec_depend>rosidl_default_runtime</exec_depend>
+
+  <member_of_group>rosidl_interface_packages</member_of_group>
+
+  <test_depend>ament_lint_auto</test_depend>
+  <test_depend>ament_lint_common</test_depend>
+
+  <export>
+    <build_type>ament_cmake</build_type>
+    <depend>rclcpp</depend>
+    <depend>rclcpp_components</depend>
+    <depend>std_msgs</depend>
+    <depend>ament_index_cpp</depend>
+    <depend>behaviortree_cpp</depend>
+    <depend>mrs_lib</depend>
+
+    <exec_depend>launch</exec_depend>
+    <exec_depend>launch_ros</exec_depend>
+    <exec_depend>ros2launch</exec_depend>
+  </export>
+</package>
