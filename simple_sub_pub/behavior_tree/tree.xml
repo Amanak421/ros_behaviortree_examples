@@ -7,4 +7,21 @@
       <BTToStringTopic ros_topic="{msg}"/>
     </Sequence>
   </BehaviorTree>
+
+  <!-- Description of Node Models (used by Groot) -->
+  <TreeNodesModel>
+    <Action ID="BTToStringTopic"
+            editable="true">
+      <input_port name="ros_topic"/>
+    </Action>
+    <Action ID="Logger"
+            editable="true">
+      <input_port name="ros_topic"/>
+    </Action>
+    <Action ID="StringTopicToBT"
+            editable="true">
+      <output_port name="ros_topic"/>
+    </Action>
+  </TreeNodesModel>
+
 </root>
