@@ -10,5 +10,6 @@ This repo demonstrates the usage and useful software design patterns when using 
 - Please read the [ROS Tutorials](https://wiki.ros.org/ROS/Tutorials) before starting to use these examples.
 
 ## Examples
-### ROS Subscribers, Publishers :left_right_arrow: Behavior Tree CPP
-![sub_pub_tree](.media/sub_pub_tree.svg)
+- Simple subscriber and publisher
+- Simple action client (and server)
+- Simple status reporter (to topic)
