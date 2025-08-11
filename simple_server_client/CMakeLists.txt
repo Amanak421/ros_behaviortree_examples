@@ -1,7 +1,6 @@
 cmake_minimum_required(VERSION 3.5)
 project(simple_server_client)
 
-# Default to C++14
 if(NOT CMAKE_CXX_STANDARD)
   set(CMAKE_CXX_STANDARD 14)
 endif()
@@ -10,16 +9,13 @@ if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   add_compile_options(-Wall -Wextra -Wpedantic)
 endif()
 
-# Find packages
 find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(rclcpp_action REQUIRED)
 find_package(rclcpp_components REQUIRED)
 find_package(std_msgs REQUIRED)
 find_package(behaviortree_cpp REQUIRED)
-find_package(mrs_lib REQUIRED)
 find_package(ament_index_cpp REQUIRED)
-find_package(Eigen3 REQUIRED)
 find_package(rosidl_default_generators REQUIRED)
 find_package(behaviortree_ros2 REQUIRED)
 find_package(rosidl_default_runtime REQUIRED)
@@ -30,17 +26,15 @@ rosidl_generate_interfaces(${PROJECT_NAME}
   DEPENDENCIES builtin_interfaces
 )
 
-# Create the shared library for action server
+# Create the shared libraries
 add_library(action_server SHARED
   src/server.cpp
 )
 
-# Create the shared library for BT node
 add_library(simple_bt_node SHARED
   src/bt_ros_node.cpp
 )
 
-# Include headers
 target_include_directories(action_server PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
   $<INSTALL_INTERFACE:include>
@@ -49,24 +43,15 @@ target_include_directories(action_server PUBLIC
 target_include_directories(simple_bt_node PRIVATE ${PROJECT_SOURCE_DIR}/include)
 target_compile_definitions(simple_bt_node PRIVATE "MY_COMPOSITION_BUILDING_DLL")
 
-# Link dependencies for action_server (including generated action)
 ament_target_dependencies(action_server
   rclcpp
   rclcpp_action
   rclcpp_components
   std_msgs
-  behaviortree_cpp
-  mrs_lib
   ament_index_cpp
-  Eigen3
   behaviortree_ros2
 )
 
-rosidl_target_interfaces(action_server
-  ${PROJECT_NAME} "rosidl_typesupport_cpp"
-)
-
-# Link dependencies for simple_bt_node (including generated action)
 ament_target_dependencies(simple_bt_node
   behaviortree_ros2
   behaviortree_cpp
@@ -77,11 +62,21 @@ ament_target_dependencies(simple_bt_node
   std_msgs
 )
 
-rosidl_target_interfaces(simple_bt_node
-  ${PROJECT_NAME} "rosidl_typesupport_cpp"
+rosidl_get_typesupport_target(
+  cpp_typesupport_target     
+  ${PROJECT_NAME}            
+  "rosidl_typesupport_cpp"   
 )
 
-# Register components
+target_link_libraries(action_server
+  "${cpp_typesupport_target}"
+)
+
+target_link_libraries(simple_bt_node
+  "${cpp_typesupport_target}"
+)
+
+
 rclcpp_components_register_nodes(simple_bt_node
   "example_simple_client_node::SimpleBTNode"
 )
@@ -91,7 +86,6 @@ rclcpp_components_register_node(action_server
   EXECUTABLE fibonacci_action_server
 )
 
-# Install targets
 install(TARGETS
   action_server
   simple_bt_node
