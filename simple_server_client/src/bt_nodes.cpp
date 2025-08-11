@@ -11,6 +11,7 @@ using namespace BT;
 
 namespace BTNodes{
 
+    /* Example from https://www.behaviortree.dev/docs/ros2_integration */
     class FibonacciAction: public RosActionNode<Fibonacci>
     {
         public:
